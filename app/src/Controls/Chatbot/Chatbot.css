@@ -1,4 +1,4 @@
 .message-box-text{
-    overflow: visible;
-    height:auto;
+    overflow: visible !important;
+    height:auto !important;
 }
