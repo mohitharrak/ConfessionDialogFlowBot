@@ -7,7 +7,7 @@ export class MessagesList extends React.Component<any, any> {
     }
     private _renderMessage(message: any) {
         return (
-            <MessageBox message={message}></MessageBox>
+            <MessageBox onSendMessage={this.props.onSendMessage} message={message}></MessageBox>
         );
     }
 

@@ -31,7 +31,7 @@ export class Input extends React.Component<any, any> {
                             onChange={e => this.onChange(e)}
                             value={this.state.text}
                             type="multiline"
-                            placeholder="Enter your message and press ENTER"
+                            placeholder="Enter your message and click Send"
                         />
                     </div>
                     <PrimaryButton onClick={this.onSubmit.bind(this)} text="Send"></PrimaryButton>

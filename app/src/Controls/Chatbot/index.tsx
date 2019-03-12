@@ -57,7 +57,7 @@ export class Chatbot extends React.Component<any, any> {
         }
     }
 
-    onSendMessage = (message: string) => {
+    SendMessage = (message: string) => {
         const messages = this.state.messages
         messages.push({
             text: message,
@@ -75,8 +75,8 @@ export class Chatbot extends React.Component<any, any> {
 
     public render(): JSX.Element {
         return (<div>
-            <MessagesList messages={this.state.messages}></MessagesList>
-            <Input onSendMessage={this.onSendMessage}></Input>
+            <MessagesList onSendMessage={this.SendMessage} messages={this.state.messages}></MessagesList>
+            <Input onSendMessage={this.SendMessage}></Input>
         </div>);
     }
 }
