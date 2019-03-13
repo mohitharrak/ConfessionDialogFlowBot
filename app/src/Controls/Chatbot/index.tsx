@@ -86,9 +86,26 @@ export class Chatbot extends React.Component<any, any> {
             })
     }
 
+    TriggerEvent = (message: any) => {
+        debugger;
+        const messages = this.state.messages
+        messages.push({
+            text: message.payload,
+            member: this.state.member,
+            direction: MessageDirection.Outgoing
+        })
+        this.setState({ messages: messages })
+
+        client.eventRequest(message.event, {})
+            .then(this._handleQueryResponse.bind(this))
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     public render(): JSX.Element {
         return (<div>
-            <MessagesList onSendMessage={this.SendMessage} messages={this.state.messages}></MessagesList>
+            <MessagesList onSendMessage={this.SendMessage.bind(this)}  onTriggerEvent={this.TriggerEvent.bind(this)} messages={this.state.messages}></MessagesList>
             <Input onSendMessage={this.SendMessage}></Input>
         </div>);
     }

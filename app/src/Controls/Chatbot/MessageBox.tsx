@@ -9,8 +9,14 @@ export class MessageBox extends React.Component<any, any> {
     }
 
     private _buttonClick(button: any) {
-        if (this.props.onSendMessage)
-            this.props.onSendMessage(button.payload);
+
+        if (button.event) {
+            if (this.props.onTriggerEvent)
+                this.props.onTriggerEvent(button);
+        }
+        else
+            if (this.props.onSendMessage)
+                this.props.onSendMessage(button.payload);
     }
 
     render(): JSX.Element {
