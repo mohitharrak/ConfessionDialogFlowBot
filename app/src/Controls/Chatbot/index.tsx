@@ -5,9 +5,9 @@ import { MessagesList } from "./MessagesList";
 import './Chatbot.css';
 import { Input } from "./Input";
 import MessageDirection from "../../Enums/MessageDirection";
-import {ApiAiClient} from "api-ai-javascript";
+import { ApiAiClient } from "api-ai-javascript";
 
-const client = new ApiAiClient({accessToken: 'ba8b1e5dad804cbfbd1bd9d1fcc08991'})
+const client = new ApiAiClient({ accessToken: 'ba8b1e5dad804cbfbd1bd9d1fcc08991' })
 
 export class Chatbot extends React.Component<any, any> {
 
@@ -15,15 +15,15 @@ export class Chatbot extends React.Component<any, any> {
         super(props);
 
         client.eventRequest('Welcome')
-        .then(this._handleQueryResponse.bind(this))
-        .catch((error) => {
-            alert('error');
-            console.log(error);
-        })
+            .then(this._handleQueryResponse.bind(this))
+            .catch((error) => {
+                alert('error');
+                console.log(error);
+            })
 
         this.state = {
             messages: [
-               
+
             ],
             member: {
                 username: 'Me'
@@ -31,25 +31,38 @@ export class Chatbot extends React.Component<any, any> {
         }
     }
 
-    private _showMessage(message:any){
-        let messages=this.state.messages;
+    private _showMessage(message: any) {
+        let messages = this.state.messages;
 
         messages.push(message);
 
-        this.setState({messages:messages});
+        this.setState({ messages: messages });
     }
 
-    private _handleQueryResponse(response:any){
-        if(response.result && response.result.fulfillment && response.result.fulfillment.messages){
-            response.result.fulfillment.messages.forEach((m)=>{
-                if(m.type==4 ){
+    private _handleQueryResponse(response: any) {
+        if (response.result && response.result.fulfillment && response.result.fulfillment.messages) {
+            response.result.fulfillment.messages.forEach((m) => {
+                if (m.type == 4) {
                     console.log(m);
 
-                    var message=m.payload;
-                    message.member={
+                    var message = m.payload;
+                    message.member = {
                         username: "Confession Bot"
                     };
-                    message.direction= MessageDirection.Incoming;
+                    message.direction = MessageDirection.Incoming;
+
+                    this._showMessage(message);
+                }
+                else if (m.type == 0) {
+                    console.log(m);
+
+                    var message: any = {
+                        "text": m.speech
+                    };
+                    message.member = {
+                        username: "Confession Bot"
+                    };
+                    message.direction = MessageDirection.Incoming;
 
                     this._showMessage(message);
                 }
@@ -67,10 +80,10 @@ export class Chatbot extends React.Component<any, any> {
         this.setState({ messages: messages })
 
         client.textRequest(message)
-        .then(this._handleQueryResponse.bind(this))
-        .catch((error) => {
-            console.log(error);
-        })
+            .then(this._handleQueryResponse.bind(this))
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     public render(): JSX.Element {
