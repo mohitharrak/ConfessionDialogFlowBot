@@ -10,7 +10,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div className="ms-Grid-row">
+        <div className="ms-Grid-row" style={{margin:'0px',marginBottom:'10px'}}>
           <div className="ms-Grid-col ms-sm12">
 
             <Chatbot></Chatbot>

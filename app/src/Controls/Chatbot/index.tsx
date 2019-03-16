@@ -10,6 +10,18 @@ import { ApiAiClient } from "api-ai-javascript";
 const client = new ApiAiClient({ accessToken: 'ba8b1e5dad804cbfbd1bd9d1fcc08991' })
 
 export class Chatbot extends React.Component<any, any> {
+    scrollToBottom = () => {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+
+    componentDidMount() {
+        this.scrollToBottom();
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom();
+    }
 
     constructor(props: any) {
         super(props);
@@ -54,11 +66,10 @@ export class Chatbot extends React.Component<any, any> {
                     this._showMessage(message);
                 }
                 else if (m.type == 0) {
+                    debugger;
                     console.log(m);
 
-                    var message: any = {
-                        "text": m.speech
-                    };
+                    var message: any = this._decodeMessage(m.speech);
                     message.member = {
                         username: "Confession Bot"
                     };
@@ -70,14 +81,26 @@ export class Chatbot extends React.Component<any, any> {
         }
     }
 
+    _decodeMessage = (text: string) => {
+        let message: any = {};
+        try {
+            let text2 = text.replace(/#\(/g, "{").replace(/\)#/g, "}");
+            message = JSON.parse(text2);
+        }
+        catch (e) {
+            message = {
+                "text": text
+            }
+        }
+        return message;
+    }
+
     SendMessage = (message: string) => {
-        const messages = this.state.messages
-        messages.push({
+        this._showMessage({
             text: message,
             member: this.state.member,
             direction: MessageDirection.Outgoing
-        })
-        this.setState({ messages: messages })
+        });
 
         client.textRequest(message)
             .then(this._handleQueryResponse.bind(this))
@@ -87,14 +110,11 @@ export class Chatbot extends React.Component<any, any> {
     }
 
     TriggerEvent = (message: any) => {
-        debugger;
-        const messages = this.state.messages
-        messages.push({
+        this._showMessage({
             text: message.payload,
             member: this.state.member,
             direction: MessageDirection.Outgoing
-        })
-        this.setState({ messages: messages })
+        });
 
         client.eventRequest(message.event, {})
             .then(this._handleQueryResponse.bind(this))
@@ -105,7 +125,7 @@ export class Chatbot extends React.Component<any, any> {
 
     public render(): JSX.Element {
         return (<div>
-            <MessagesList onSendMessage={this.SendMessage.bind(this)}  onTriggerEvent={this.TriggerEvent.bind(this)} messages={this.state.messages}></MessagesList>
+            <MessagesList onSendMessage={this.SendMessage.bind(this)} onTriggerEvent={this.TriggerEvent.bind(this)} messages={this.state.messages}></MessagesList>
             <Input onSendMessage={this.SendMessage}></Input>
         </div>);
     }
