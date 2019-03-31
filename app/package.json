@@ -8,10 +8,12 @@
     "@types/react": "16.8.7",
     "@types/react-dom": "16.8.2",
     "api-ai-javascript": "^2.0.0-beta.21",
+    "axios": "^0.18.0",
     "dialogflow": "^0.8.0",
     "office-ui-fabric-react": "^6.153.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "typescript": "3.3.3333"
   },
